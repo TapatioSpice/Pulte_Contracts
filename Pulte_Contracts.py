@@ -23,7 +23,7 @@ def filter_data(data, community, series):
 
 # Function to create and display the GUI
 def create_gui(data):
-    st.title("Pulte Contracts App")
+    st.title("Pulte Contracts")
 
     # Password protection
     password_input = st.sidebar.text_input("Enter password:", type="password")
@@ -34,7 +34,7 @@ def create_gui(data):
         st.stop()
 
     # Automatically collapse the sidebar once the password is entered
-    st.sidebar.text("")  # Empty space to force the sidebar to collapse
+    st.sidebar.empty()
 
     communities = data['Community'].unique()
 
@@ -65,3 +65,10 @@ def show_table(data):
 
 # Create and display the GUI
 create_gui(load_data())
+
+# Custom HTML and CSS to hide the sidebar
+st.markdown("""
+    <style>
+        #MainMenu {visibility: hidden;}
+    </style>
+""", unsafe_allow_html=True)
