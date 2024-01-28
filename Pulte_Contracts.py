@@ -22,23 +22,17 @@ def filter_data(data, community, series):
     return data[(data['Community'] == community) & (data['Series'] == series)]
 
 # Function to create and display the GUI
-def create_gui(data, password_entered):
-    st.title("Pulte Contracts App")
+def create_gui(data):
+    st.title("Pulte Contracts")
 
-    if not password_entered:
-        # Password protection
-        password_input = st.text_input("Enter password:", type="password")
-        entered_password = password_input.lower()  # Convert to lowercase for case-insensitive comparison
+    # Password protection in the sidebar
+    password_input = st.sidebar.text_input("Enter password:", type="password")
+    entered_password = password_input.lower()  # Convert to lowercase for case-insensitive comparison
 
-        if entered_password == PASSWORD:
-            password_entered = True
+    if entered_password != PASSWORD:
+        st.sidebar.warning("Incorrect password. Please enter the correct password to proceed.")
+        st.stop()
 
-    if password_entered:
-        # Proceed to main content
-        main_content(data)
-
-# Function for the main content
-def main_content(data):
     communities = data['Community'].unique()
 
     community_col, series_col, button_col = st.columns([2, 2, 1])
@@ -66,8 +60,15 @@ def show_table(data):
 
     st.table(table_data)
 
-# Initialize password_entered flag
-password_entered = False
+# Footer
+footer = """
+---
+
+*Created and upkept by Alejandro Escutia | Copyright © 2024*
+"""
 
 # Create and display the GUI
-create_gui(load_data(), password_entered)
+create_gui(load_data())
+
+# Add the footer
+st.markdown(footer)
