@@ -22,21 +22,20 @@ def filter_data(data, community, series):
     return data[(data['Community'] == community) & (data['Series'] == series)]
 
 # Function to create and display the GUI
-def create_gui(data):
+def create_gui(data, password_entered):
     st.title("Pulte Contracts App")
 
-    # Password protection
-    password_input = st.text_input("Enter password:", type="password")
-    entered_password = password_input.lower()  # Convert to lowercase for case-insensitive comparison
-    if entered_password == PASSWORD:
-        # If password is correct, remove the password section
-        st.empty()
+    if not password_entered:
+        # Password protection
+        password_input = st.text_input("Enter password:", type="password")
+        entered_password = password_input.lower()  # Convert to lowercase for case-insensitive comparison
 
+        if entered_password == PASSWORD:
+            password_entered = True
+
+    if password_entered:
         # Proceed to main content
         main_content(data)
-
-    else:
-        st.warning("Incorrect password. Please enter the correct password to proceed.")
 
 # Function for the main content
 def main_content(data):
@@ -67,5 +66,8 @@ def show_table(data):
 
     st.table(table_data)
 
+# Initialize password_entered flag
+password_entered = False
+
 # Create and display the GUI
-create_gui(load_data())
+create_gui(load_data(), password_entered)
