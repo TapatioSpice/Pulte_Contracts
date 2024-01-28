@@ -25,16 +25,13 @@ def filter_data(data, community, series):
 def create_gui(data):
     st.title("Pulte Contracts App")
 
-    # Password protection
+    # Password protection in the sidebar
     password_input = st.sidebar.text_input("Enter password:", type="password")
     entered_password = password_input.lower()  # Convert to lowercase for case-insensitive comparison
 
     if entered_password != PASSWORD:
         st.sidebar.warning("Incorrect password. Please enter the correct password to proceed.")
         st.stop()
-
-    # Display a placeholder in place of the password input
-    password_placeholder = st.sidebar.empty()
 
     communities = data['Community'].unique()
 
@@ -63,5 +60,15 @@ def show_table(data):
 
     st.table(table_data)
 
+# Footer
+footer = """
+---
+
+*Created and upkept by Alejandro Escutia | Copyright © 2024*
+"""
+
 # Create and display the GUI
 create_gui(load_data())
+
+# Add the footer
+st.markdown(footer)
