@@ -48,7 +48,11 @@ password_input = st.text_input("Enter password:", type="password")
 entered_password = password_input.lower()  # Convert to lowercase for case-insensitive comparison
 
 if entered_password == PASSWORD:
-    st.success("Correct password! You can now use the app.")
+    success_message = st.success("Correct password! You can now use the app.")
+    
+    # Add a time delay to automatically close the success message after 5 seconds
+    time.sleep(5)
+    success_message.empty()  # Empty the success message to remove it
     
     # Display the GUI components only if the password is correct
     communities = load_data()['Community'].unique()
