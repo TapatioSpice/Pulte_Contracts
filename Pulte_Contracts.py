@@ -47,6 +47,9 @@ footer = """
 password_input = st.text_input("Enter password:", type="password")
 entered_password = password_input.lower()  # Convert to lowercase for case-insensitive comparison
 
+# Title
+st.title("Pulte Contracts")
+
 if entered_password == PASSWORD:
     # Display the GUI components only if the password is correct
     communities = load_data()['Community'].unique()
