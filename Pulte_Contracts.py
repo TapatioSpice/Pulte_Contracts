@@ -36,10 +36,6 @@ def show_table(data):
 
     st.table(formatted_table_data)
 
-    # Add a button to trigger Streamlit's print functionality
-    if st.button('Print Table'):
-        st.print(formatted_table_data)
-
 # Footer
 footer = """
 ---
@@ -47,32 +43,30 @@ footer = """
 *Created and upkept by Alejandro Escutia | Copyright © 2024*
 """
 
-# Create and display the GUI
-communities = load_data()['Community'].unique()
-
-selected_community = st.selectbox('Select Community:', communities)
-
-series_options = load_data()[load_data()['Community'] == selected_community]['Series'].unique()
-selected_series = st.selectbox('Select Series:', series_options)
-
-if st.button('Create Table'):
-    try:
-        if selected_community and selected_series:
-            filtered_data = filter_data(load_data(), selected_community, selected_series)
-            show_table(filtered_data)
-
-    except Exception as e:
-        st.error(f"An error occurred: {str(e)}")
-
 # Password protection at the bottom
 password_input = st.text_input("Enter password:", type="password")
 entered_password = password_input.lower()  # Convert to lowercase for case-insensitive comparison
 
 if entered_password == PASSWORD:
     st.success("Correct password! You can now use the app.")
+    
+    # Display the GUI components only if the password is correct
+    communities = load_data()['Community'].unique()
+    selected_community = st.selectbox('Select Community:', communities)
+    series_options = load_data()[load_data()['Community'] == selected_community]['Series'].unique()
+    selected_series = st.selectbox('Select Series:', series_options)
+
+    if st.button('Create Table'):
+        try:
+            if selected_community and selected_series:
+                filtered_data = filter_data(load_data(), selected_community, selected_series)
+                show_table(filtered_data)
+
+        except Exception as e:
+            st.error(f"An error occurred: {str(e)}")
 else:
+    # Display a warning if the password is incorrect
     st.warning("Incorrect password. Please enter the correct password to proceed.")
 
 # Add the footer
 st.markdown(footer)
-
