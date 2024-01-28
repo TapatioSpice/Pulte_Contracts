@@ -25,24 +25,24 @@ def filter_data(data, community, series):
 def create_gui(data):
     st.title("Pulte Contracts App")
 
-    # Password protection in the sidebar
-    password_input = st.sidebar.text_input("Enter password:", type="password", key="password_input")
+    communities = data['Community'].unique()
+
+    community_col, series_col, password_col, button_col = st.columns([2, 2, 3, 1])
+
+    selected_community = community_col.selectbox('Select Community:', communities)
+
+    series_options = data[data['Community'] == selected_community]['Series'].unique()
+    selected_series = series_col.selectbox('Select Series:', series_options)
+
+    # Password protection in the bottom bar
+    password_input = password_col.text_input("Enter password:", type="password")
     entered_password = password_input.lower()  # Convert to lowercase for case-insensitive comparison
 
     if entered_password != PASSWORD:
-        st.sidebar.warning("Incorrect password. Please enter the correct password to proceed.")
+        password_col.warning("Incorrect password. Please enter the correct password to proceed.")
     else:
         # Display a success message when correct password is entered
-        st.sidebar.success("You're in! Close the sidebar with the 'X' on the top right.")
-
-        communities = data['Community'].unique()
-
-        community_col, series_col, button_col = st.columns([2, 2, 1])
-
-        selected_community = community_col.selectbox('Select Community:', communities)
-
-        series_options = data[data['Community'] == selected_community]['Series'].unique()
-        selected_series = series_col.selectbox('Select Series:', series_options)
+        password_col.success("You're in!")
 
         if button_col.button('Create Table'):
             try:
@@ -77,6 +77,9 @@ footer = """
 
 # Create and display the GUI
 create_gui(load_data())
+
+# Add the footer
+st.markdown(footer)
 
 # Add the footer
 st.markdown(footer)
