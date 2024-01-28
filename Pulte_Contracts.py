@@ -28,10 +28,18 @@ def create_gui(data):
     # Password protection
     password_input = st.text_input("Enter password:", type="password")
     entered_password = password_input.lower()  # Convert to lowercase for case-insensitive comparison
-    if entered_password != PASSWORD:
-        st.warning("Incorrect password. Please enter the correct password to proceed.")
-        st.stop()
+    if entered_password == PASSWORD:
+        # If password is correct, remove the password section
+        st.empty()
 
+        # Proceed to main content
+        main_content(data)
+
+    else:
+        st.warning("Incorrect password. Please enter the correct password to proceed.")
+
+# Function for the main content
+def main_content(data):
     communities = data['Community'].unique()
 
     community_col, series_col, button_col = st.columns([2, 2, 1])
