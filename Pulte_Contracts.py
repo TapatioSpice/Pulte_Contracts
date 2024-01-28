@@ -23,7 +23,7 @@ def filter_data(data, community, series):
 
 # Function to create and display the GUI
 def create_gui(data):
-    st.title("Pulte Contracts App")
+    st.title("Pulte Contracts")
 
     # Password protection in the sidebar
     password_input = st.sidebar.text_input("Enter password:", type="password")
@@ -54,6 +54,9 @@ def create_gui(data):
 # Function to create the table and display it
 def show_table(data):
     data = data.sort_values(by='Work Type')
+
+    # Round the values to 2 decimal places
+    data['Amount'] = data['Amount'].round(2)
 
     table_data = pd.pivot_table(data, values='Amount', index='Work Type', columns='Plan', aggfunc='sum', fill_value=0)
     table_data.reset_index(inplace=True)
