@@ -23,7 +23,7 @@ def filter_data(data, community, series):
 
 # Function to create and display the GUI
 def create_gui(data):
-    st.title("Pulte Contracts")
+    st.title("Pulte Contracts App")
 
     # Password protection in the sidebar
     password_input = st.sidebar.text_input("Enter password:", type="password")
@@ -36,16 +36,16 @@ def create_gui(data):
     # Collapse the sidebar once the correct password is entered
     st.sidebar.expander("")
 
-    # Dark mode toggle in the sidebar
-    dark_mode = st.sidebar.checkbox("Dark Mode", key="dark_mode_checkbox")
+    # Light mode toggle in the sidebar
+    light_mode = st.sidebar.checkbox("Light Mode", key="light_mode_checkbox")
 
-    if dark_mode:
+    if light_mode:
         st.markdown(
             """
             <style>
             body {
-                background-color: #1E1E1E;
-                color: white;
+                background-color: white;
+                color: black;
             }
             </style>
             """,
@@ -56,8 +56,8 @@ def create_gui(data):
             """
             <style>
             body {
-                background-color: white;
-                color: black;
+                background-color: #1E1E1E;
+                color: white;
             }
             </style>
             """,
