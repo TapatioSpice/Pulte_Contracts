@@ -23,7 +23,7 @@ def filter_data(data, community, series):
 
 # Function to create and display the GUI
 def create_gui(data):
-    st.title("Pulte Contracts App")
+    st.title("Pulte Contracts")
 
     communities = data['Community'].unique()
 
