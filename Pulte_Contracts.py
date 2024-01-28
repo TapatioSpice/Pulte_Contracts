@@ -23,7 +23,7 @@ def filter_data(data, community, series):
 
 # Function to create and display the GUI
 def create_gui(data):
-    st.title("Pulte Contracts")
+    st.title("Pulte Contracts App")
 
     # Password protection in the sidebar
     password_input = st.sidebar.text_input("Enter password:", type="password")
@@ -31,25 +31,27 @@ def create_gui(data):
 
     if entered_password != PASSWORD:
         st.sidebar.warning("Incorrect password. Please enter the correct password to proceed.")
-        st.stop()
+    else:
+        # Display a success message when correct password is entered
+        st.sidebar.success("You're in! Close the sidebar with the 'X' on the top right.")
 
-    communities = data['Community'].unique()
+        communities = data['Community'].unique()
 
-    community_col, series_col, button_col = st.columns([2, 2, 1])
+        community_col, series_col, button_col = st.columns([2, 2, 1])
 
-    selected_community = community_col.selectbox('Select Community:', communities)
+        selected_community = community_col.selectbox('Select Community:', communities)
 
-    series_options = data[data['Community'] == selected_community]['Series'].unique()
-    selected_series = series_col.selectbox('Select Series:', series_options)
+        series_options = data[data['Community'] == selected_community]['Series'].unique()
+        selected_series = series_col.selectbox('Select Series:', series_options)
 
-    if button_col.button('Create Table'):
-        try:
-            if selected_community and selected_series:
-                filtered_data = filter_data(data, selected_community, selected_series)
-                show_table(filtered_data)
+        if button_col.button('Create Table'):
+            try:
+                if selected_community and selected_series:
+                    filtered_data = filter_data(data, selected_community, selected_series)
+                    show_table(filtered_data)
 
-        except Exception as e:
-            st.error(f"An error occurred: {str(e)}")
+            except Exception as e:
+                st.error(f"An error occurred: {str(e)}")
 
 # Function to create the table and display it
 def show_table(data):
@@ -75,6 +77,9 @@ footer = """
 
 # Create and display the GUI
 create_gui(load_data())
+
+# Add the footer
+st.markdown(footer)
 
 # Add the footer
 st.markdown(footer)
