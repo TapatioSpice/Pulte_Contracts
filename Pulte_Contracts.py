@@ -25,7 +25,18 @@ def filter_data(data, community, series):
 
 # Function to create and display the GUI
 def create_gui(data):
-    st.title("Pulte Contracts")
+    st.title("Pulte Contracts App")
+
+    # Password protection in a collapsible top bar
+    with st.beta_expander("🔒 Password Protection", expanded=False):
+        password_input = st.text_input("Enter password:", type="password")
+        entered_password = password_input.lower()
+
+        if entered_password != PASSWORD:
+            st.warning("Incorrect password. Please enter the correct password to proceed.")
+            st.stop()
+        else:
+            st.success("You're in! Continue using the app.")
 
     communities = data['Community'].unique()
 
@@ -35,15 +46,6 @@ def create_gui(data):
 
     series_options = data[data['Community'] == selected_community]['Series'].unique()
     selected_series = series_col.selectbox('Select Series:', series_options)
-
-    # Password protection using balloons
-    password_input = st.text_input("Enter password:", type="password")
-    entered_password = password_input.lower()  # Convert to lowercase for case-insensitive comparison
-
-    if entered_password == PASSWORD:
-        st.balloons()  # Show balloons for correct password
-    elif entered_password != "":
-        st.warning("Incorrect password. Please enter the correct password to proceed.")
 
     if button_col.button('Create Table'):
         try:
@@ -68,6 +70,10 @@ def show_table(data):
     formatted_table_data = table_data.applymap(lambda x: f"{x:.2f}" if isinstance(x, (float, int)) else x)
 
     st.table(formatted_table_data)
+
+    # Add a button to trigger Streamlit's print functionality
+    if st.button('Print Table'):
+        st.print(formatted_table_data)
 
 # Footer
 footer = """
