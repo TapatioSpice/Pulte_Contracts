@@ -2,6 +2,7 @@ import streamlit as st
 import openpyxl
 import pandas as pd
 
+
 # Specify the GitHub raw content link to the Excel file
 GITHUB_EXCEL_LINK = "https://raw.githubusercontent.com/TapatioSpice/PulteContracts/main/PulteContracts1.xlsx"
 
@@ -23,7 +24,7 @@ def filter_data(data, community, series):
 
 # Function to create and display the GUI
 def create_gui(data):
-    st.title("Pulte Contracts")
+    st.title("Pulte Contracts App")
 
     communities = data['Community'].unique()
 
@@ -35,15 +36,15 @@ def create_gui(data):
     selected_series = series_col.selectbox('Select Series:', series_options)
 
     # Password protection in the bottom bar
-    password_input = password_col.text_input("Enter password:", type="password")
-    entered_password = password_input.lower()  # Convert to lowercase for case-insensitive comparison
+    entered_password = password_col.text_input("Enter password:", type="password", key="password").lower()
 
-    if entered_password != PASSWORD:
-        password_col.warning("Incorrect password. Please enter the correct password to proceed.")
-    else:
-        # Display a success message when correct password is entered
-        password_col.success("You're in!")
+    # Display a temporary success message using balloons
+    success_message = "You're in! Close the sidebar with the 'X' on the top right."
+    if entered_password == PASSWORD:
+        st.balloons()
+        st.success(success_message)
 
+        # Create Table button
         if button_col.button('Create Table'):
             try:
                 if selected_community and selected_series:
@@ -77,9 +78,6 @@ footer = """
 
 # Create and display the GUI
 create_gui(load_data())
-
-# Add the footer
-st.markdown(footer)
 
 # Add the footer
 st.markdown(footer)
