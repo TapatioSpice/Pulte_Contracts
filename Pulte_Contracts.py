@@ -3,6 +3,7 @@ import openpyxl
 import pandas as pd
 
 
+
 # Specify the GitHub raw content link to the Excel file
 GITHUB_EXCEL_LINK = "https://raw.githubusercontent.com/TapatioSpice/PulteContracts/main/PulteContracts1.xlsx"
 
@@ -38,21 +39,23 @@ def create_gui(data):
     # Password protection in the bottom bar
     entered_password = password_col.text_input("Enter password:", type="password", key="password").lower()
 
-    # Display a temporary success message using balloons
-    success_message = "You're in! Close the sidebar with the 'X' on the top right."
-    if entered_password == PASSWORD:
+    # Display a success message using balloons only when the correct password is entered
+    if entered_password == PASSWORD and st.session_state.password_entered != PASSWORD:
         st.balloons()
-        st.success(success_message)
+        st.success("You're in! Close the sidebar with the 'X' on the top right.")
 
-        # Create Table button
-        if button_col.button('Create Table'):
-            try:
-                if selected_community and selected_series:
-                    filtered_data = filter_data(data, selected_community, selected_series)
-                    show_table(filtered_data)
+    # Update session state to remember the password entry
+    st.session_state.password_entered = entered_password
 
-            except Exception as e:
-                st.error(f"An error occurred: {str(e)}")
+    # Create Table button
+    if button_col.button('Create Table'):
+        try:
+            if selected_community and selected_series:
+                filtered_data = filter_data(data, selected_community, selected_series)
+                show_table(filtered_data)
+
+        except Exception as e:
+            st.error(f"An error occurred: {str(e)}")
 
 # Function to create the table and display it
 def show_table(data):
