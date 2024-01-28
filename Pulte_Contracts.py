@@ -1,6 +1,8 @@
 import streamlit as st
 import openpyxl
 import pandas as pd
+import base64
+from io import BytesIO
 
 # Specify the GitHub raw content link to the Excel file
 GITHUB_EXCEL_LINK = "https://raw.githubusercontent.com/TapatioSpice/PulteContracts/main/PulteContracts1.xlsx"
@@ -68,6 +70,30 @@ def show_table(data):
 
     st.table(formatted_table_data)
 
+    # Create Excel and PDF export buttons
+    excel_button = st.button("Export as Excel")
+    pdf_button = st.button("Export as PDF")
+
+    if excel_button:
+        # Export to Excel
+        excel_data = BytesIO()
+        excel_writer = pd.ExcelWriter(excel_data, engine='xlsxwriter')
+        formatted_table_data.to_excel(excel_writer, sheet_name='Sheet1', index=False)
+        excel_writer.save()
+        excel_data = excel_data.getvalue()
+        b64 = base64.b64encode(excel_data).decode()
+        st.markdown(f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="table_export.xlsx">Download Excel file</a>', unsafe_allow_html=True)
+
+    if pdf_button:
+        # Export to PDF
+        pdf_data = BytesIO()
+        pdf_writer = pd.ExcelWriter(pdf_data, engine='xlsxwriter')
+        formatted_table_data.to_excel(pdf_writer, sheet_name='Sheet1', index=False)
+        pdf_writer.save()
+        pdf_data = pdf_data.getvalue()
+        b64 = base64.b64encode(pdf_data).decode()
+        st.markdown(f'<a href="data:application/pdf;base64,{b64}" download="table_export.pdf">Download PDF file</a>', unsafe_allow_html=True)
+
 # Footer
 footer = """
 ---
@@ -77,9 +103,6 @@ footer = """
 
 # Create and display the GUI
 create_gui(load_data())
-
-# Add the footer
-st.markdown(footer)
 
 # Add the footer
 st.markdown(footer)
