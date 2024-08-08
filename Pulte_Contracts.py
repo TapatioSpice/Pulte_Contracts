@@ -6,7 +6,7 @@ import pandas as pd
 GITHUB_EXCEL_LINK = "https://raw.githubusercontent.com/TapatioSpice/PulteContracts/main/PulteContracts1.xlsx"
 
 # Predefined password
-PASSWORD = "landscape11"
+PASSWORD = "landscape12"
 
 def load_data():
     try:
