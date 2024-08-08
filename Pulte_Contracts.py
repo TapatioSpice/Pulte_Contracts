@@ -32,7 +32,7 @@ def show_table(data):
     table_data.reset_index(inplace=True)
 
     # Format values in the DataFrame to display with 2 decimal places
-    formatted_table_data = table_data.applymap(lambda x: f"{x:.2f}" if isinstance(x, (float, int)) else x)
+    formatted_table_data = table_data.applymap(lambda x: f"{x:,.2f}" if isinstance(x, (float, int)) else x)
 
     st.table(formatted_table_data)
 
